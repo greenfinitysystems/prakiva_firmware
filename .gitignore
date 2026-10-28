@@ -1,0 +1,11 @@
+# PlatformIO build output
+.pio/
+
+# Editor and operating-system files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
