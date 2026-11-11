@@ -1,0 +1,782 @@
+{
+  "specification": {
+    "schema_version": "1.0",
+    "product_id": "prakiva_aquarium_rev1",
+    "product_name": "Prakiva Aquarium Controller",
+    "hardware_revision": "1.0"
+  },
+  "resources": [
+    {
+      "id": "lighting_white_gpio",
+      "type": "gpio",
+      "gpio": 4,
+      "direction": "output"
+    },
+    {
+      "id": "lighting_red_gpio",
+      "type": "gpio",
+      "gpio": 5,
+      "direction": "output"
+    },
+    {
+      "id": "lighting_green_gpio",
+      "type": "gpio",
+      "gpio": 6,
+      "direction": "output"
+    },
+    {
+      "id": "lighting_blue_gpio",
+      "type": "gpio",
+      "gpio": 7,
+      "direction": "output"
+    },
+    {
+      "id": "fan_gpio",
+      "type": "gpio",
+      "gpio": 14,
+      "direction": "output",
+      "description": "Fan physical binary output; Step 6C LED-only test"
+    },
+    {
+      "id": "co2_gpio",
+      "type": "gpio",
+      "gpio": 15,
+      "direction": "output",
+      "description": "Physical binary output; LED-only verification; no relay/mains connected"
+    },
+    {
+      "id": "heater_gpio",
+      "type": "gpio",
+      "gpio": 16,
+      "direction": "output",
+      "description": "Physical binary output; LED-only verification; no relay/mains connected"
+    },
+    {
+      "id": "chiller_gpio",
+      "type": "gpio",
+      "gpio": 17,
+      "direction": "output",
+      "description": "Physical binary output; LED-only verification; no relay/mains connected"
+    },
+    {
+      "id": "filter_group_gpio",
+      "type": "gpio",
+      "gpio": 18,
+      "direction": "output",
+      "description": "Physical binary output; LED-only verification; no relay/mains connected"
+    },
+    {
+      "id": "ph_adc_gpio",
+      "type": "gpio",
+      "gpio": 1,
+      "direction": "input",
+      "description": "Reserved hardware assignment; not activated in this patch"
+    },
+    {
+      "id": "rtc_sda_gpio",
+      "type": "gpio",
+      "gpio": 8,
+      "direction": "bus",
+      "description": "Reserved hardware assignment; not activated in this patch"
+    },
+    {
+      "id": "rtc_scl_gpio",
+      "type": "gpio",
+      "gpio": 9,
+      "direction": "bus",
+      "description": "Reserved hardware assignment; not activated in this patch"
+    },
+    {
+      "id": "water_temperature_gpio",
+      "type": "gpio",
+      "gpio": 10,
+      "direction": "input",
+      "description": "Reserved hardware assignment; not activated in this patch"
+    },
+    {
+      "id": "ambient_dht11_gpio",
+      "type": "gpio",
+      "gpio": 11,
+      "direction": "input",
+      "description": "Reserved hardware assignment; not activated in this patch"
+    },
+    {
+      "id": "ultrasonic_trigger_gpio",
+      "type": "gpio",
+      "gpio": 12,
+      "direction": "output",
+      "description": "Reserved hardware assignment; not activated in this patch"
+    },
+    {
+      "id": "ultrasonic_echo_gpio",
+      "type": "gpio",
+      "gpio": 13,
+      "direction": "input",
+      "description": "Reserved hardware assignment; not activated in this patch"
+    },
+    {
+      "id": "relay_master_enable_gpio",
+      "type": "gpio",
+      "gpio": 21,
+      "direction": "output",
+      "description": "Reserved hardware assignment; not activated in this patch"
+    }
+  ],
+  "components": [
+    {
+      "id": "lighting_white_driver",
+      "driver": "PwmActuatorDriver",
+      "component_type": "physical_actuator",
+      "resources": {
+        "output": "lighting_white_gpio"
+      }
+    },
+    {
+      "id": "lighting_red_driver",
+      "driver": "PwmActuatorDriver",
+      "component_type": "physical_actuator",
+      "resources": {
+        "output": "lighting_red_gpio"
+      }
+    },
+    {
+      "id": "lighting_green_driver",
+      "driver": "PwmActuatorDriver",
+      "component_type": "physical_actuator",
+      "resources": {
+        "output": "lighting_green_gpio"
+      }
+    },
+    {
+      "id": "lighting_blue_driver",
+      "driver": "PwmActuatorDriver",
+      "component_type": "physical_actuator",
+      "resources": {
+        "output": "lighting_blue_gpio"
+      }
+    },
+    {
+      "id": "fan_driver",
+      "driver": "BinaryActuatorDriver",
+      "component_type": "physical_actuator",
+      "resources": {
+        "output": "fan_gpio"
+      }
+    },
+    {
+      "id": "co2_driver",
+      "driver": "BinaryActuatorDriver",
+      "component_type": "physical_actuator",
+      "resources": {
+        "output": "co2_gpio"
+      }
+    },
+    {
+      "id": "heater_driver",
+      "driver": "BinaryActuatorDriver",
+      "component_type": "physical_actuator",
+      "resources": {
+        "output": "heater_gpio"
+      }
+    },
+    {
+      "id": "chiller_driver",
+      "driver": "BinaryActuatorDriver",
+      "component_type": "physical_actuator",
+      "resources": {
+        "output": "chiller_gpio"
+      }
+    },
+    {
+      "id": "filter_group_driver",
+      "driver": "BinaryActuatorDriver",
+      "component_type": "physical_actuator",
+      "resources": {
+        "output": "filter_group_gpio"
+      }
+    },
+    {
+      "id": "filter_group_aux_test_driver",
+      "driver": "NullActuatorDriver",
+      "component_type": "physical_actuator"
+    },
+    {
+      "id": "water_temperature_sensor_driver",
+      "driver": "DummySensorDriver",
+      "component_type": "virtual_sensor",
+      "inputs": {},
+      "parameters": {
+        "random": {
+          "type": "number",
+          "label": "Random (1=on)",
+          "default": 1,
+          "minimum": 0,
+          "maximum": 1,
+          "step": 1
+        },
+        "value": {
+          "type": "number",
+          "label": "Constant value",
+          "default": 25,
+          "minimum": 0,
+          "maximum": 50,
+          "step": 0.1
+        },
+        "min": {
+          "type": "number",
+          "label": "Random minimum",
+          "default": 20,
+          "minimum": 0,
+          "maximum": 50,
+          "step": 0.1
+        },
+        "max": {
+          "type": "number",
+          "label": "Random maximum",
+          "default": 35,
+          "minimum": 0,
+          "maximum": 50,
+          "step": 0.1
+        }
+      },
+      "unit": "\u00b0C"
+    },
+    {
+      "id": "ph_sensor_driver",
+      "driver": "DummySensorDriver",
+      "component_type": "virtual_sensor",
+      "inputs": {},
+      "parameters": {
+        "random": {
+          "type": "number",
+          "label": "Random (1=on)",
+          "default": 1,
+          "minimum": 0,
+          "maximum": 1,
+          "step": 1
+        },
+        "value": {
+          "type": "number",
+          "label": "Constant value",
+          "default": 7,
+          "minimum": 0,
+          "maximum": 14,
+          "step": 0.1
+        },
+        "min": {
+          "type": "number",
+          "label": "Random minimum",
+          "default": 6,
+          "minimum": 0,
+          "maximum": 14,
+          "step": 0.1
+        },
+        "max": {
+          "type": "number",
+          "label": "Random maximum",
+          "default": 8.5,
+          "minimum": 0,
+          "maximum": 14,
+          "step": 0.1
+        }
+      },
+      "unit": "pH"
+    },
+    {
+      "id": "ambient_temperature_sensor_driver",
+      "driver": "DummySensorDriver",
+      "component_type": "virtual_sensor",
+      "inputs": {},
+      "parameters": {
+        "random": {
+          "type": "number",
+          "label": "Random (1=on)",
+          "default": 1,
+          "minimum": 0,
+          "maximum": 1,
+          "step": 1
+        },
+        "value": {
+          "type": "number",
+          "label": "Constant value",
+          "default": 28,
+          "minimum": -10,
+          "maximum": 60,
+          "step": 0.1
+        },
+        "min": {
+          "type": "number",
+          "label": "Random minimum",
+          "default": 20,
+          "minimum": -10,
+          "maximum": 60,
+          "step": 0.1
+        },
+        "max": {
+          "type": "number",
+          "label": "Random maximum",
+          "default": 40,
+          "minimum": -10,
+          "maximum": 60,
+          "step": 0.1
+        }
+      },
+      "unit": "\u00b0C"
+    },
+    {
+      "id": "ambient_humidity_sensor_driver",
+      "driver": "DummySensorDriver",
+      "component_type": "virtual_sensor",
+      "inputs": {},
+      "parameters": {
+        "random": {
+          "type": "number",
+          "label": "Random (1=on)",
+          "default": 1,
+          "minimum": 0,
+          "maximum": 1,
+          "step": 1
+        },
+        "value": {
+          "type": "number",
+          "label": "Constant value",
+          "default": 60,
+          "minimum": 0,
+          "maximum": 100,
+          "step": 0.1
+        },
+        "min": {
+          "type": "number",
+          "label": "Random minimum",
+          "default": 30,
+          "minimum": 0,
+          "maximum": 100,
+          "step": 0.1
+        },
+        "max": {
+          "type": "number",
+          "label": "Random maximum",
+          "default": 90,
+          "minimum": 0,
+          "maximum": 100,
+          "step": 0.1
+        }
+      },
+      "unit": "%"
+    },
+    {
+      "id": "water_distance_sensor_driver",
+      "driver": "DummySensorDriver",
+      "component_type": "virtual_sensor",
+      "inputs": {},
+      "parameters": {
+        "random": {
+          "type": "number",
+          "label": "Random (1=on)",
+          "default": 1,
+          "minimum": 0,
+          "maximum": 1,
+          "step": 1
+        },
+        "value": {
+          "type": "number",
+          "label": "Constant value",
+          "default": 20,
+          "minimum": 0,
+          "maximum": 200,
+          "step": 0.1
+        },
+        "min": {
+          "type": "number",
+          "label": "Random minimum",
+          "default": 5,
+          "minimum": 0,
+          "maximum": 200,
+          "step": 0.1
+        },
+        "max": {
+          "type": "number",
+          "label": "Random maximum",
+          "default": 40,
+          "minimum": 0,
+          "maximum": 200,
+          "step": 0.1
+        }
+      },
+      "unit": "cm"
+    },
+    {
+      "id": "virtual_operation_test_driver",
+      "driver": "TimedVirtualActuatorTest",
+      "component_type": "virtual_actuator",
+      "actuators": {}
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "lighting",
+      "name": "Lighting Fixture",
+      "kind": "actuator",
+      "icon": "sunny-outline",
+      "channels": [
+        {
+          "id": "white",
+          "label": "White",
+          "valueType": "analog",
+          "unit": "%",
+          "min": 0,
+          "max": 100,
+          "supportedPolicies": [
+            "analog_curve"
+          ]
+        },
+        {
+          "id": "red",
+          "label": "Red",
+          "valueType": "analog",
+          "unit": "%",
+          "min": 0,
+          "max": 100,
+          "supportedPolicies": [
+            "analog_curve"
+          ]
+        },
+        {
+          "id": "green",
+          "label": "Green",
+          "valueType": "analog",
+          "unit": "%",
+          "min": 0,
+          "max": 100,
+          "supportedPolicies": [
+            "analog_curve"
+          ]
+        },
+        {
+          "id": "blue",
+          "label": "Blue",
+          "valueType": "analog",
+          "unit": "%",
+          "min": 0,
+          "max": 100,
+          "supportedPolicies": [
+            "analog_curve"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fan",
+      "name": "Cooling Fan",
+      "kind": "actuator",
+      "icon": "snow-outline",
+      "channels": [
+        {
+          "id": "output",
+          "label": "Cooling Fan",
+          "valueType": "binary",
+          "supportedPolicies": [
+            "manual_binary",
+            "binary_curve",
+            "threshold_rules",
+            "periodic_pulse"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "co2",
+      "name": "CO\u2082 Solenoid",
+      "kind": "actuator",
+      "icon": "leaf-outline",
+      "channels": [
+        {
+          "id": "output",
+          "label": "CO\u2082 Solenoid",
+          "valueType": "binary",
+          "supportedPolicies": [
+            "manual_binary",
+            "binary_curve",
+            "threshold_rules",
+            "periodic_pulse"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "heater",
+      "name": "Heater",
+      "kind": "actuator",
+      "icon": "thermometer-outline",
+      "channels": [
+        {
+          "id": "output",
+          "label": "Heater",
+          "valueType": "binary",
+          "supportedPolicies": [
+            "manual_binary",
+            "binary_curve",
+            "threshold_rules",
+            "periodic_pulse"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chiller",
+      "name": "Chiller",
+      "kind": "actuator",
+      "icon": "snow-outline",
+      "channels": [
+        {
+          "id": "output",
+          "label": "Chiller",
+          "valueType": "binary",
+          "supportedPolicies": [
+            "manual_binary",
+            "binary_curve",
+            "threshold_rules",
+            "periodic_pulse"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "filter_group",
+      "name": "Filter / UVC / Skimmer",
+      "kind": "actuator",
+      "icon": "water-outline",
+      "channels": [
+        {
+          "id": "output",
+          "label": "Filter / UVC / Skimmer",
+          "valueType": "binary",
+          "supportedPolicies": [
+            "manual_binary",
+            "binary_curve",
+            "threshold_rules",
+            "periodic_pulse"
+          ]
+        },
+        {
+          "id": "aux_test",
+          "label": "Auxiliary Test",
+          "valueType": "binary",
+          "supportedPolicies": [
+            "manual_binary",
+            "binary_curve"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "water_temperature",
+      "name": "Water Temperature",
+      "kind": "sensor",
+      "icon": "thermometer-outline",
+      "channels": [
+        {
+          "id": "value",
+          "label": "Water Temperature",
+          "valueType": "analog",
+          "unit": "\u00b0C",
+          "min": 0,
+          "max": 50,
+          "supportedPolicies": []
+        }
+      ]
+    },
+    {
+      "id": "ph",
+      "name": "pH",
+      "kind": "sensor",
+      "icon": "flask-outline",
+      "channels": [
+        {
+          "id": "value",
+          "label": "pH",
+          "valueType": "analog",
+          "unit": "pH",
+          "min": 0,
+          "max": 14,
+          "supportedPolicies": []
+        }
+      ]
+    },
+    {
+      "id": "ambient_temperature",
+      "name": "Ambient Temperature",
+      "kind": "sensor",
+      "icon": "thermometer-outline",
+      "channels": [
+        {
+          "id": "value",
+          "label": "Ambient Temperature",
+          "valueType": "analog",
+          "unit": "\u00b0C",
+          "min": -10,
+          "max": 60,
+          "supportedPolicies": []
+        }
+      ]
+    },
+    {
+      "id": "ambient_humidity",
+      "name": "Ambient Humidity",
+      "kind": "sensor",
+      "icon": "water-outline",
+      "channels": [
+        {
+          "id": "value",
+          "label": "Ambient Humidity",
+          "valueType": "analog",
+          "unit": "%",
+          "min": 0,
+          "max": 100,
+          "supportedPolicies": []
+        }
+      ]
+    },
+    {
+      "id": "water_distance",
+      "name": "Water Distance",
+      "kind": "sensor",
+      "icon": "resize-outline",
+      "channels": [
+        {
+          "id": "value",
+          "label": "Water Distance",
+          "valueType": "analog",
+          "unit": "cm",
+          "min": 0,
+          "max": 200,
+          "supportedPolicies": []
+        }
+      ]
+    },
+    {
+      "id": "virtual_operation_test",
+      "name": "Virtual Operation Test",
+      "kind": "actuator",
+      "icon": "flask-outline",
+      "channels": [
+        {
+          "id": "run",
+          "label": "10-second operation",
+          "valueType": "trigger",
+          "supportedPolicies": [
+            "trigger"
+          ]
+        }
+      ]
+    }
+  ],
+  "mappings": [
+    {
+      "capability_id": "lighting",
+      "channel_id": "white",
+      "component_id": "lighting_white_driver",
+      "endpoint": "get_set"
+    },
+    {
+      "capability_id": "lighting",
+      "channel_id": "red",
+      "component_id": "lighting_red_driver",
+      "endpoint": "get_set"
+    },
+    {
+      "capability_id": "lighting",
+      "channel_id": "green",
+      "component_id": "lighting_green_driver",
+      "endpoint": "get_set"
+    },
+    {
+      "capability_id": "lighting",
+      "channel_id": "blue",
+      "component_id": "lighting_blue_driver",
+      "endpoint": "get_set"
+    },
+    {
+      "capability_id": "fan",
+      "channel_id": "output",
+      "component_id": "fan_driver",
+      "endpoint": "get_set"
+    },
+    {
+      "capability_id": "co2",
+      "channel_id": "output",
+      "component_id": "co2_driver",
+      "endpoint": "get_set"
+    },
+    {
+      "capability_id": "heater",
+      "channel_id": "output",
+      "component_id": "heater_driver",
+      "endpoint": "get_set"
+    },
+    {
+      "capability_id": "chiller",
+      "channel_id": "output",
+      "component_id": "chiller_driver",
+      "endpoint": "get_set"
+    },
+    {
+      "capability_id": "filter_group",
+      "channel_id": "output",
+      "component_id": "filter_group_driver",
+      "endpoint": "get_set"
+    },
+    {
+      "capability_id": "filter_group",
+      "channel_id": "aux_test",
+      "component_id": "filter_group_aux_test_driver",
+      "endpoint": "get_set"
+    },
+    {
+      "capability_id": "water_temperature",
+      "channel_id": "value",
+      "component_id": "water_temperature_sensor_driver",
+      "endpoint": "get"
+    },
+    {
+      "capability_id": "ph",
+      "channel_id": "value",
+      "component_id": "ph_sensor_driver",
+      "endpoint": "get"
+    },
+    {
+      "capability_id": "ambient_temperature",
+      "channel_id": "value",
+      "component_id": "ambient_temperature_sensor_driver",
+      "endpoint": "get"
+    },
+    {
+      "capability_id": "ambient_humidity",
+      "channel_id": "value",
+      "component_id": "ambient_humidity_sensor_driver",
+      "endpoint": "get"
+    },
+    {
+      "capability_id": "water_distance",
+      "channel_id": "value",
+      "component_id": "water_distance_sensor_driver",
+      "endpoint": "get"
+    },
+    {
+      "capability_id": "virtual_operation_test",
+      "channel_id": "run",
+      "component_id": "virtual_operation_test_driver",
+      "endpoint": "get_set"
+    }
+  ],
+  "configuration_schema": {
+    "version": "1.0",
+    "properties": []
+  },
+  "history_policy": {
+    "enabled": true,
+    "aggregation_window_seconds": 12,
+    "retention_points": 288,
+    "test_mode": true
+  }
+}
